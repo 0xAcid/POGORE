@@ -3,8 +3,119 @@
 #	Thanks to PogoDev for all the help	
 #################################################################
 STEP = 0.0005
-
+ACCOUNTS = 40
+MAX_ITERATIONS = 100
 from haversine import haversine
+
+
+# Old kmeans stuff
+def Clustering_6(xData, Workers):
+
+	Data = []
+	for i in range(0,len(xData)):
+		Data.append([xData[i], -1])
+	Clusters = []
+	for i in range(0, Min(len(xData),Workers)):
+		Clusters.append([])
+	Randoms = []
+	
+	# Randomly assign one element per cluster
+	x = 0
+	for i in Clusters:
+
+		LocalRandom = random.randint(0, len(Data)-1)
+		
+		while LocalRandom in Randoms:
+			LocalRandom = random.randint(0, len(Data)-1)
+		Randoms.append(LocalRandom)
+		i.append(Data[LocalRandom][0])
+		Data[LocalRandom][1] = x
+		x = x+1
+
+	ITE = 0
+	while True:
+
+		for i in range(0, len(Data)):
+			AssociatedCluster = -1
+			CurrentMin = 99999999999999999999999999999
+			for j in range(0, Min(len(xData),Workers)):
+				if Centroid(Clusters[j]):
+					Dist = Distance(Centroid(Clusters[j]) , Data[i][0])
+				else:
+					Dist = 0
+
+				if ( Dist < CurrentMin):
+					CurrentMin = Dist
+					AssociatedCluster = j
+
+			
+			if Data[i][1] != -1:
+				Clusters[ Data[i][1]].remove( Data[i][0] )
+
+			Clusters[ AssociatedCluster ].append(Data[i][0])
+			Data[i][1] = AssociatedCluster
+		ITE +=1
+		if ITE > MAX_ITERATIONS:
+			print("reached max ITE")
+			break
+			
+			
+	for i in Clusters:
+		print(len(i))
+	return Clusters
+
+# Old kmeans stuff
+def Clustering(Data, Workers):
+	Clusters = []
+	for i in range(0, Workers):
+		Clusters.append([])
+	Randoms = []
+	
+	# Randomly assign one element per cluster
+	x = 0
+
+	for i in Clusters:
+
+		LocalRandom = random.randint(0, len(Data)-1)
+		while LocalRandom in Randoms:
+			
+			LocalRandom = random.randint(0, len(Data)-1)
+		Randoms.append(LocalRandom)
+		i.append(Data[LocalRandom][0])
+		Data[LocalRandom][1] = x
+		x = x+1
+
+	ITE = 0
+	while True:
+
+		for i in range(0, len(Data)):
+			AssociatedCluster = -1
+			CurrentMin = 99999999999999999999999999999
+			for j in range(0, Workers):
+				if Centroid(Clusters[j]):
+					Dist = Distance(Centroid(Clusters[j]) , Data[i][0])
+				else:
+					Dist = 0
+
+				if ( Dist < CurrentMin):
+					CurrentMin = Dist
+					AssociatedCluster = j
+			# remove from old cluster
+			
+			if Data[i][1] != -1:
+				Clusters[ Data[i][1]].remove( Data[i][0] )
+
+				#add to new cluster
+			Clusters[ AssociatedCluster ].append(Data[i][0])
+			Data[i][1] = AssociatedCluster
+		ITE +=1
+		print(ITE)
+		if ITE > MAX_ITERATIONS:
+			print("reached max ITE")
+			break
+
+	return Clusters
+
 
 def Distance(a,b):
 	# return math.fabs(a-b)
