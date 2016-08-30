@@ -1,4 +1,3 @@
-#Don't mind the 3rd value each time, it's deleted in main
 #################################################################
 #	Credits goes to Ax. from PogoDev	
 #	Thanks to PogoDev for all the help	
